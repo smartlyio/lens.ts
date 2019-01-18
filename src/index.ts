@@ -10,7 +10,13 @@ export class LensImpl<T, U> {
 
   public k<K extends keyof U>(key: K): Lens<T, U[K]> {
     return this.compose(lens(
-      t => t[key],
+      t => {
+        if (t === undefined) {
+          return t;
+        } else {
+          return t[key]
+        }
+      },
       v => t => {
         const copied = copy(t);
         copied[key] = v;
